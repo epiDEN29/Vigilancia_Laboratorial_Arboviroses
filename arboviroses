@@ -1,0 +1,52 @@
+# Importar bibliotecas
+import pandas as pd
+import smtplib
+from email.message import EmailMessage
+
+# definir remetende de email, senha e destinatários
+SENDER_EMAIL = "pedroaraujo.arboviroses@gmail.com"
+APP_PASSWORD = "senha de app gerada no gmail"
+destinatarios = ['denguesespa@gmail.com']
+
+# definir função que envia o email
+def send_mail_with_excel(recipient_email, subject, content, excel_file):
+    msg = EmailMessage()
+    msg['Subject'] = subject
+    msg['From'] = SENDER_EMAIL
+    msg['To'] = recipient_email
+    msg.set_content(content)
+
+    with open(excel_file, 'rb') as f:
+        file_data = f.read()
+    msg.add_attachment(file_data, maintype="application", subtype="xlsx", filename=excel_file)
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(SENDER_EMAIL, APP_PASSWORD)
+        smtp.send_message(msg)
+
+# lendo arquivo
+dados = pd.read_excel(r'/content/data.xlsx')
+
+# deletando linhas com resultados vazios
+dados.drop(dados.loc[dados['Resultado'] == ' '].index, inplace=True)
+
+# retirando espaços das strings de reultados
+dados['Resultado'] = dados['Resultado'].str.strip()
+
+# contando os resultados e os colocando em colunas
+contagem_resultados = dados[['Mun. Residência', 'Resultado', 'Requisição']].groupby(by=['Mun. Residência', 'Resultado']).count().unstack(level=1).droplevel(0, axis=1)
+
+# somando número de exames concluídos, conforme número de resultados entregues
+contagem_resultados['Exames Concluídos'] = contagem_resultados.sum(axis=1)
+
+# contando número de amostras entregues, conforme número de requisições únicas
+amostras_entregues = dados[['Mun. Residência', 'Requisição']].drop_duplicates('Requisição').groupby('Mun. Residência').count().rename(columns={'Requisição': 'Amostras Entregues'})
+
+# unindo contagem_resultados e amostras_entregues em apenas um dataframe
+df = pd.concat([amostras_entregues, contagem_resultados], axis=1)
+
+# colocando colunas na ordem desejada e gerando arquivo em excel
+df[['Amostras Entregues', 'Exames Concluídos', 'Inconclusivo', 'Indeterminado', 'Não Reagente', 'Reagente', 'Não Detectável', 'Detectável']].to_excel(r'df.xlsx')
+
+# enviar email com excel anexado
+send_mail_with_excel(destinatarios, 'teste', 'hello world', 'df.xlsx')
