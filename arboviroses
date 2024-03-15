@@ -5,8 +5,8 @@ from email.message import EmailMessage
 
 # definir remetende de email, senha e destinatários
 SENDER_EMAIL = "pedroaraujo.arboviroses@gmail.com"
-APP_PASSWORD = "senha de app gerada no gmail"
-destinatarios = ['denguesespa@gmail.com']
+APP_PASSWORD = "**** **** **** ****"
+destinatarios = ['pedroarthuraraujo@yahoo.com.br']
 
 # definir função que envia o email
 def send_mail_with_excel(recipient_email, subject, content, excel_file):
@@ -37,16 +37,19 @@ dados['Resultado'] = dados['Resultado'].str.strip()
 contagem_resultados = dados[['Mun. Residência', 'Resultado', 'Requisição']].groupby(by=['Mun. Residência', 'Resultado']).count().unstack(level=1).droplevel(0, axis=1)
 
 # somando número de exames concluídos, conforme número de resultados entregues
-contagem_resultados['Exames Concluídos'] = contagem_resultados.sum(axis=1)
+contagem_resultados['Exames Realizados'] = contagem_resultados.sum(axis=1)
 
 # contando número de amostras entregues, conforme número de requisições únicas
-amostras_entregues = dados[['Mun. Residência', 'Requisição']].drop_duplicates('Requisição').groupby('Mun. Residência').count().rename(columns={'Requisição': 'Amostras Entregues'})
+amostras_entregues = dados[['Mun. Residência', 'Requisição']].drop_duplicates('Requisição').groupby('Mun. Residência').count().rename(columns={'Requisição': 'Amostras Enviadas'})
 
 # unindo contagem_resultados e amostras_entregues em apenas um dataframe
 df = pd.concat([amostras_entregues, contagem_resultados], axis=1)
 
 # colocando colunas na ordem desejada e gerando arquivo em excel
-df[['Amostras Entregues', 'Exames Concluídos', 'Inconclusivo', 'Indeterminado', 'Não Reagente', 'Reagente', 'Não Detectável', 'Detectável']].to_excel(r'df.xlsx')
+df[['Amostras Enviadas', 'Exames Realizados', 'Inconclusivo', 'Indeterminado', 'Não Reagente', 'Reagente', 'Não Detectável', 'Detectável']].to_excel(r'VigiLab_Pará.xlsx')
+
+# enviar email com excel anexado
+send_mail_with_excel(destinatarios, 'Vigilância Laboratorial Pará', 'Segue planilha no anexo', 'VigiLab_Pará.xlsx')
 
 # enviar email com excel anexado
 send_mail_with_excel(destinatarios, 'teste', 'hello world', 'df.xlsx')
