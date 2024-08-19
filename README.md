@@ -17,39 +17,43 @@ VigiLab_Pará_Arboviroses.xlsx: Arquivo Excel gerado pelo script, contendo os re
 data.xlsx: Arquivo Excel de entrada contendo as requisições laboratoriais.
 
 Pré-requisitos:
-Python 3.x
-Google Colab (opcional, mas recomendado)
-Bibliotecas Python: pandas
+- Python 3.x
+- Google Colab (opcional, mas recomendado)
+- Bibliotecas Python: pandas
 
 Como Utilizar
 
-Montar o Google Drive: O script monta o Google Drive para acessar os arquivos diretamente da nuvem.
+- Montar o Google Drive: O script monta o Google Drive para acessar os arquivos diretamente da nuvem.
 
 from google.colab import drive
 drive.mount('/content/drive')
 
-Carregar os dados:
-Substitua o caminho do arquivo pelo caminho do seu arquivo de dados de entrada.
-O script usa pandas para ler o arquivo Excel.
+Carregar os dados
+
+- Substitua o caminho do arquivo pelo caminho do seu arquivo de dados de entrada.
+- O script usa pandas para ler o arquivo Excel.
 
 dados = pd.read_excel('/content/drive/My Drive/Vigilância Laboratorial/data.xlsx')
 
-Processamento dos dados:
-A função processar_dados_agravo(dados, agravo) é utilizada para processar e organizar os dados para cada agravo.
-Os resultados são então salvos em um novo arquivo Excel.
+Processamento dos dados
+
+- A função processar_dados_agravo(dados, agravo) é utilizada para processar e organizar os dados para cada agravo.
+- Os resultados são então salvos em um novo arquivo Excel.
 
 output_path = '/content/drive/My Drive/Vigilância Laboratorial/VigiLab_Pará_Arboviroses.xlsx'
 
-Salvando os Resultados:
-Os dados processados são salvos em diferentes abas do arquivo Excel de saída, facilitando a análise e interpretação.
+Salvando os Resultados
+
+- Os dados processados são salvos em diferentes abas do arquivo Excel de saída, facilitando a análise e interpretação.
 
 with pd.ExcelWriter(output_path) as writer:
     df_dengue.to_excel(writer, sheet_name='DENGUE')
     df_zika.to_excel(writer, sheet_name='ZIKA')
     df_chikungunya.to_excel(writer, sheet_name='CHIKUNGUNYA')
 
-Conclusão:
-O script finaliza com uma mensagem de sucesso.
+Conclusão
+
+- O script finaliza com uma mensagem de sucesso.
 
 print(f"Tabela salva com sucesso!")
 
