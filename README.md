@@ -10,12 +10,12 @@ O script é responsável por:
 - Contagem e Organização dos Resultados: Conta os resultados dos exames e organiza as informações em uma tabela pivotada, somando o total de amostras enviadas e de casos positivos.
 - Exportação dos Dados: Salva os resultados processados em um novo arquivo Excel, com uma aba dedicada para cada agravo.
 
-## Estrutura do Projeto:
+## Estrutura do Projeto
 
 VigiLab_Pará_Arboviroses.xlsx: Arquivo Excel gerado pelo script, contendo os resultados dos exames para DENGUE, ZIKA e CHIKUNGUNYA.
 data.xlsx: Arquivo Excel de entrada contendo as requisições laboratoriais.
 
-## Pré-requisitos:
+## Pré-requisitos
 - Python 3.x
 - Google Colab (opcional, mas recomendado)
 - Bibliotecas Python: pandas
