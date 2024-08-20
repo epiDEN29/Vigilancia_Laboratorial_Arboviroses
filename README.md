@@ -22,6 +22,7 @@ Bibliotecas Python: pandas
 
 ## Como Utilizar
 Montar o Google Drive: O script monta o Google Drive para acessar os arquivos diretamente da nuvem.
+
 from google.colab import drive
 drive.mount('/content/drive')
 
