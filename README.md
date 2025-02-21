@@ -8,6 +8,10 @@ Este projeto consiste em um script Python para processar e analisar dados labora
 
 Os dados processados nesse projeto devem ser oriundos da base de dados do Gerenciador de Ambiente Laboratorial (GAL). Para utilização em outras fontes de dados, o script de análise deve ser devidamente ajustado, conforme a necessidade.
 
+#### Como baixar os dados
+
+Login GAL > Biologia Médica > Relatórios > Epidemiológicos > Relatórios Epidemiológicos por Agravo - Dados Clínicos > preencher informações
+
 #### Funcionalidades
 
 - Processamento de dados por períodos de 7 dias
